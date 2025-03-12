@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard</title>
+    <link rel="stylesheet" href="faculty.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Faculty Dashboard</h1>
+        
+        <div class="grid">
+            <!-- Attendance Block -->
+            <div class="card" >
+                <div class="card-header">
+                    <i data-lucide="users"></i>
+                    <h2><a target="_blank" href="attendance.html" style="color: aliceblue;">Student Attendance</a> </h2>
+                </div>
+                
+                <div class="card-content" id="attendance-list">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Assignments Block -->
+            <div class="card">
+                <div class="card-header">
+                    <i data-lucide="clipboard-list"></i>
+                    <h2><a target="_blank" href="assignment.html" style="color: aliceblue;">Assignment Status</a></h2>
+                </div>
+                <div class="card-content" id="assignment-list">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Announcements Block -->
+            <div class="card">
+                <div class="card-header">
+                    <i data-lucide="bell"></i>
+                    <h2>Announcements</h2>
+                </div>
+                <div class="card-content" id="announcement-list">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Grades Block -->
+            <div class="card">
+                <div class="card-header">
+                    <i data-lucide="graduation-cap"></i>
+                    <h2><a target="_blank" href="marks.html" style="color: aliceblue;">Student Grades</a></h2>
+                </div>
+                <div class="card-content">
+                    <table id="grades-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="faculty.js"></script>
+</body>
+</html>

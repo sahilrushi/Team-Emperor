@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+        }
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 50px;
+        }
+
+        .role-selection {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+        }
+
+        .role {
+            padding: 20px 40px;
+            background-color: #4caf50;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .role:hover {
+            transform: scale(1.1);
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome! Please Select Your Role</h1>
+        <div class="role-selection">
+            <div class="role" onclick="redirectToLogin('student')">Student</div>
+            <div class="role" onclick="redirectToLogin('faculty')">Faculty</div>
+            <div class="role" onclick="redirectToLogin('admin')">Administrator</div>
+        </div>
+    </div>
+
+    <script>
+        function redirectToLogin(role) {
+            window.location.href = `login.html?role=${role}`;
+        }
+    </script>
+</body>
+</html>

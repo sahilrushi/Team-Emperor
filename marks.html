@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks Entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom right, #1e3a8a, #581c87, #831843);
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-container {
+            background: white;
+            color: black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 900px;
+            overflow-x: auto;
+        }
+        h2 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background: #333;
+            color: white;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: 80px;
+            border: 1px solid black;
+            border-radius: 5px;
+            text-align: center;
+            background: white;
+            color: black;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            color: white;
+        }
+        .add-btn {
+            background-color: #2563eb;
+        }
+        .delete-btn {
+            background-color: #8A2BE2;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="color: white;"> Student Marks Entry </h2>
+    
+    <div class="table-container">
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId" placeholder="Enter ID">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter Name">
+        <button class="add-btn" onclick="addStudent()">Add Student</button>
+
+        <br>
+        <label for="deleteRow">Serial No. to Delete:</label>
+        <input type="number" id="deleteRow" min="1" placeholder="Enter Serial No.">
+        <button class="delete-btn" onclick="deleteStudent()">Delete Student</button>
+
+        <table id="marksTable">
+            <tr>
+                <th>Serial No.</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>AI</th>
+                <th>DBMS</th>
+                <th>ADA</th>
+                <th>LATEX</th>
+                <th>DMS</th>
+                <th>Total Marks</th>
+                <th>Average</th>
+                <th>Action</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        let students = [];
+
+        function addStudent() {
+            let studentId = document.getElementById("studentId").value.trim();
+            let studentName = document.getElementById("studentName").value.trim();
+
+            if (studentId === "" || studentName === "") {
+                alert("Please enter both Student ID and Name.");
+                return;
+            }
+
+            students.push({ id: studentId, name: studentName, marks: [0, 0, 0, 0, 0] });
+            students.sort((a, b) => a.id.localeCompare(b.id));
+            renderTable();
+
+            document.getElementById("studentId").value = "";
+            document.getElementById("studentName").value = "";
+        }
+
+        function deleteStudent() {
+            let serialToDelete = parseInt(document.getElementById("deleteRow").value);
+            if (isNaN(serialToDelete) || serialToDelete < 1 || serialToDelete > students.length) {
+                alert("Enter a valid Serial Number.");
+                return;
+            }
+
+            students.splice(serialToDelete - 1, 1);
+            renderTable();
+            document.getElementById("deleteRow").value = "";
+        }
+
+        function renderTable() {
+            let table = document.getElementById("marksTable");
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
+            students.forEach((student, index) => {
+                let newRow = table.insertRow(-1);
+                newRow.insertCell(0).innerText = index + 1;
+                newRow.insertCell(1).innerText = student.id;
+                newRow.insertCell(2).innerText = student.name;
+                for (let i = 0; i < 5; i++) {
+                    let input = document.createElement("input");
+                    input.type = "number";
+                    input.value = student.marks[i];
+                    input.dataset.index = i;
+                    input.addEventListener("input", function () {
+                        student.marks[this.dataset.index] = parseInt(this.value) || 0;
+                        updateTotals();
+                    });
+                    newRow.insertCell(i + 3).appendChild(input);
+                }
+                let totalMarksCell = newRow.insertCell(8);
+                let averageMarksCell = newRow.insertCell(9);
+                totalMarksCell.innerText = student.marks.reduce((a, b) => a + b, 0);
+                averageMarksCell.innerText = (student.marks.reduce((a, b) => a + b, 0) / 5).toFixed(2);
+            });
+        }
+
+        function updateTotals() {
+            let table = document.getElementById("marksTable");
+            for (let i = 1; i < table.rows.length; i++) {
+                let row = table.rows[i];
+                let student = students[i - 1];
+                let total = student.marks.reduce((a, b) => a + b, 0);
+                row.cells[8].innerText = total;
+                row.cells[9].innerText = (total / 5).toFixed(2);
+            }
+        }
+    </script>
+</body>
+</html>

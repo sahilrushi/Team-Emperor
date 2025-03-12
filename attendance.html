@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to bottom right, #1e3a8a, #581c87, #831843);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-container {
+            background: white;
+            color: black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 900px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .present {
+            background-color: green;
+            color: white;
+        }
+        .absent {
+            background-color: red;
+            color: white;
+        }
+        .sunday {
+            background-color: rgba(211, 211, 211, 0.735);
+        }
+        .holiday {
+            background-color: orange;
+        }
+        .add-student {
+            margin: 20px 0;
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+        }
+        button {
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: aliceblue;">Student Attendance Calendar</h1>
+    
+    <div class="add-student">
+        <input type="text" id="studentId" placeholder="Student ID">
+        <input type="text" id="studentName" placeholder="Student Name">
+        <input type="date" id="attendanceDate">
+        <button onclick="addStudent()">Add Student</button>
+    </div>
+    
+    <div class="table-container">
+        <h3 id="month-year"></h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Date</th>
+                    <th>Attendance</th>
+                </tr>
+            </thead>
+            <tbody id="attendance-body">
+                <tr>
+                    <td>1</td>
+                    <td>AI2025</td>
+                    <td>Prathmesh</td>
+                    <td><input type="date" value="2025-04-01"></td>
+                    <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>CS2025</td>
+                    <td>Sahil</td>
+                    <td><input type="date" value="2025-04-01"></td>
+                    <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>ME2025</td>
+                    <td>Rahul</td>
+                    <td><input type="date" value="2025-04-01"></td>
+                    <td><input type="checkbox"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function addStudent() {
+            let studentId = document.getElementById("studentId").value;
+            let studentName = document.getElementById("studentName").value;
+            let attendanceDate = document.getElementById("attendanceDate").value;
+            if (!studentId || !studentName || !attendanceDate) {
+                alert("Please enter Student ID, Name, and Date.");
+                return;
+            }
+            
+            let table = document.getElementById("attendance-body");
+            let newRow = table.insertRow();
+            let serialNo = table.rows.length;
+            newRow.innerHTML = `
+                <td>${serialNo}</td>
+                <td>${studentId}</td>
+                <td>${studentName}</td>
+                <td><input type="date" value="${attendanceDate}"></td>
+                <td><input type="checkbox"></td>
+            `;
+            
+            document.getElementById("studentId").value = "";
+            document.getElementById("studentName").value = "";
+            document.getElementById("attendanceDate").value = "";
+        }
+    </script>
+</body>
+</html>

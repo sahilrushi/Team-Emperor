@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Notice Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #1e3a8a, #581c87, #831843);
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .board-container {
+            background: #f5f5dc; /* Light beige canvas color */
+            background-image: url('https://www.transparenttextures.com/patterns/fabric-of-squares.png'); /* Canvas texture */
+            color: black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 700px;
+            overflow-x: auto;
+            border: 5px solid #8b5a2b; /* Dark brown border for wooden effect */
+        }
+        h1 {
+            color: #333;
+        }
+        .notice {
+            background: #f9f9a1;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: aliceblue;">College Notice Board</h1>
+    <div class="board-container">
+        <div class="notice">Mid-Semester Exams start from April 15th. Prepare well!</div>
+        <div class="notice">Convocation Ceremony on May 5th. Register before April 20th.</div>
+        <div class="notice">Annual Sports Meet on April 30th. Sign up in the student office.</div>
+    </div>
+</body>
+</html>

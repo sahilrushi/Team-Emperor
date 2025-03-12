@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Announcements</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom right, #1e3a8a, #9d44e1, #831843);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        body.h1{
+            font-size: larger;
+
+        }
+        .canvas-container {
+            background: white;
+            color: black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            max-width: 80%;
+            overflow-x: auto;
+        }
+        canvas {
+            border: 5px solid #333;
+            width: 100%;
+            height: 300px;
+            background: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+        }
+        .add-entry {
+            margin-bottom: 20px;
+            
+        }
+        .add-btn, .erase-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .erase-btn {
+            background-color: #dc3545;
+        }
+        .add-btn:hover {
+            background-color: #218838;
+        }
+        .erase-btn:hover {
+            background-color: #c82333;
+        }
+        input {
+            width: 200px;
+            padding: 5px;
+            margin: 5px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-family: 'Pacifico', cursive; ">College Announcements Board</h1>
+    
+    <div class="add-entry">
+        <input type="text" id="announcementText" placeholder="Enter Announcement" style="color: black;">
+        <button class="add-btn" onclick="addAnnouncement()">Add Announcement</button>
+        <button class="erase-btn" onclick="eraseAnnouncements()">Erase All</button>
+        <button class="erase-btn" onclick="eraseLastAnnouncement()">Erase Last</button>
+    </div>
+    
+    <div class="canvas-container">
+        <canvas id="announcementCanvas"></canvas>
+    </div>
+
+    <script>
+        let canvas = document.getElementById("announcementCanvas");
+        let ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 300;
+        let announcements = [];
+
+        function addAnnouncement() {
+            let text = document.getElementById("announcementText").value;
+            if (!text) {
+                alert("Please enter an announcement.");
+                return;
+            }
+            announcements.push(text);
+            document.getElementById("announcementText").value = "";
+            renderAnnouncements();
+        }
+
+        function eraseAnnouncements() {
+            announcements = [];
+            renderAnnouncements();
+        }
+
+        function eraseLastAnnouncement() {
+            announcements.pop();
+            renderAnnouncements();
+        }
+
+        function renderAnnouncements() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "bold 18px 'Roboto', sans-serif";
+            ctx.fillStyle = "black";
+            let y = 50;
+            
+            announcements.forEach((announcement, index) => {
+                ctx.fillText(`${index + 1}. ${announcement}`, 50, y);
+                drawPin(30, y - 10);
+                y += 40;
+            });
+        }
+
+        function drawPin(x, y) {
+            ctx.beginPath();
+            ctx.arc(x, y, 6, 0, Math.PI * 2);
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.strokeStyle = "black";
+            ctx.stroke();
+        }
+    </script>
+</body>
+</html>

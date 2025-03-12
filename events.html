@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Events</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+             background: linear-gradient(to bottom right, #1e3a8a, #581c87, #831843);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-container {
+            background: white;
+            color: black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            max-width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background: #333;
+            color: white;
+        }
+        .add-entry {
+            margin-bottom: 20px;
+        }
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .add-btn:hover {
+            background-color: #218838;
+        }
+        input {
+            width: 200px;
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>College Events Management</h1>
+    
+    <div class="add-entry">
+        <input type="text" id="eventName" placeholder="Event Name">
+        <input type="date" id="eventDate">
+        <input type="text" id="eventLocation" placeholder="Location">
+        <button class="add-btn" onclick="addEvent()">Add Event</button>
+    </div>
+    
+    <div class="table-container">
+        <table id="eventsTable">
+            <thead>
+                <tr>
+                    <th>Event Name</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function addEvent() {
+            let name = document.getElementById("eventName").value;
+            let date = document.getElementById("eventDate").value;
+            let location = document.getElementById("eventLocation").value;
+
+            if (!name || !date || !location) {
+                alert("Please fill all fields.");
+                return;
+            }
+
+            let table = document.getElementById("eventsTable").getElementsByTagName("tbody")[0];
+            let newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${date}</td>
+                <td>${location}</td>
+                <td><button onclick="deleteEvent(this)">Delete</button></td>
+            `;
+
+            document.getElementById("eventName").value = "";
+            document.getElementById("eventDate").value = "";
+            document.getElementById("eventLocation").value = "";
+        }
+
+        function deleteEvent(button) {
+            let row = button.parentElement.parentElement;
+            row.remove();
+        }
+    </script>
+</body>
+</html>

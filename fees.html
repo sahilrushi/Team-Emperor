@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fees Payment Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #1e3a8a, #9d44e1, #831843);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-container {
+            background: white;
+            color: black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            max-width: 80%;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background: #333;
+            color: white;
+        }
+        .paid {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .pending {
+            background-color: #FF5733;
+            color: white;
+        }
+        .edit-btn, .save-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .edit-btn:hover, .save-btn:hover {
+            background-color: #0056b3;
+        }
+        input {
+            width: 150px;
+            padding: 5px;
+            margin: 5px;
+        }
+        .add-entry {
+            margin-bottom: 20px;
+        }
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .add-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>College Fees Payment Management</h1>
+
+    <div class="add-entry">
+        <input type="text" id="studentName" placeholder="Student Name">
+        <input type="text" id="studentID" placeholder="Student ID">
+        <input type="text" id="course" placeholder="Course">
+        <input type="number" id="totalFees" placeholder="Total Fees">
+        <input type="number" id="paidAmount" placeholder="Paid Amount">
+        <button class="add-btn" onclick="addEntry()">Add Entry</button>
+    </div>
+
+    <div class="table-container">
+        <table id="feesTable">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Student ID</th>
+                    <th>Course</th>
+                    <th>Total Fees</th>
+                    <th>Paid Amount</th>
+                    <th>Due Amount</th>
+                    <th>Payment Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Prathmesh</td>
+                    <td>AI2025</td>
+                    <td>AI & ML</td>
+                    <td>50000</td>
+                    <td contenteditable="true" oninput="updateRow(this)">30000</td>
+                    <td>20000</td>
+                    <td class="pending">Pending</td>
+                    <td><button class="edit-btn" onclick="editRow(this)">Edit</button></td>
+                </tr>
+                <tr>
+                    <td>Sahil</td>
+                    <td>CS2025</td>
+                    <td>Computer Science</td>
+                    <td>60000</td>
+                    <td contenteditable="true" oninput="updateRow(this)">60000</td>
+                    <td>0</td>
+                    <td class="paid">Paid</td>
+                    <td><button class="edit-btn" onclick="editRow(this)">Edit</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function updateRow(element) {
+            let row = element.parentElement;
+            let totalFees = parseInt(row.cells[3].innerText);
+            let paidAmount = parseInt(row.cells[4].innerText);
+            let dueAmount = totalFees - paidAmount;
+            row.cells[5].innerText = dueAmount;
+
+            let statusCell = row.cells[6];
+            if (dueAmount === 0) {
+                statusCell.innerText = "Paid";
+                statusCell.className = "paid";
+            } else {
+                statusCell.innerText = "Pending";
+                statusCell.className = "pending";
+            }
+        }
+
+        function editRow(button) {
+            let row = button.parentElement.parentElement;
+            let paidAmountCell = row.cells[4];
+
+            if (button.innerText === "Edit") {
+                paidAmountCell.contentEditable = "true";
+                paidAmountCell.focus();
+                button.innerText = "Save";
+                button.className = "save-btn";
+            } else {
+                paidAmountCell.contentEditable = "false";
+                button.innerText = "Edit";
+                button.className = "edit-btn";
+            }
+        }
+
+        function addEntry() {
+            let name = document.getElementById("studentName").value;
+            let id = document.getElementById("studentID").value;
+            let course = document.getElementById("course").value;
+            let totalFees = parseInt(document.getElementById("totalFees").value);
+            let paidAmount = parseInt(document.getElementById("paidAmount").value);
+
+            if (!name || !id || !course || isNaN(totalFees) || isNaN(paidAmount)) {
+                alert("Please fill all fields correctly.");
+                return;
+            }
+
+            let dueAmount = totalFees - paidAmount;
+            let status = dueAmount === 0 ? "Paid" : "Pending";
+            let statusClass = dueAmount === 0 ? "paid" : "pending";
+
+            let table = document.getElementById("feesTable").getElementsByTagName("tbody")[0];
+            let newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${id}</td>
+                <td>${course}</td>
+                <td>${totalFees}</td>
+                <td contenteditable="true" oninput="updateRow(this)">${paidAmount}</td>
+                <td>${dueAmount}</td>
+                <td class="${statusClass}">${status}</td>
+                <td><button class="edit-btn" onclick="editRow(this)">Edit</button></td>
+            `;
+
+            document.getElementById("studentName").value = "";
+            document.getElementById("studentID").value = "";
+            document.getElementById("course").value = "";
+            document.getElementById("totalFees").value = "";
+            document.getElementById("paidAmount").value = "";
+        }
+    </script>
+
+</body>
+</html>

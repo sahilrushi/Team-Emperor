@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <form class="login-form">
+            <div class="text-center">
+                <p class="title">Welcome</p>
+                <p class="subtitle" id="roleTitle">Sign in to continue</p>
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" class="input-field" required>
+                <div class="password-container">
+                    <input type="password" id="password" placeholder="Password" class="input-field" required>
+                </div>
+            </div>
+
+            <button type="button" class="continue-button" onclick="login()">
+                Continue
+            </button>
+
+            <p id="error-message" style="color: red; display: none;"></p>
+        </form>
+    </div>
+
+    <script>
+        // Get role from URL (handle case insensitivity & set default)
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = (urlParams.get("role") || "student").toLowerCase();
+
+        document.getElementById("roleTitle").innerText = `Sign in as ${role.charAt(0).toUpperCase() + role.slice(1)}`;
+
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (!email || !password) {
+                errorMessage.innerText = "All fields are required.";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, role })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    alert("Login Successful!");
+                    localStorage.setItem("token", data.token);
+
+                    // Redirect based on role (with validation)
+                    if (role === 'student') {
+                        window.location.href = "student-dashboard.html";
+                    } else if (role === 'faculty') {
+                        window.location.href = "faculty-dashboard.html";
+                    } else if (role === 'admin') {
+                        window.location.href = "admin-dashboard.html";
+                    } else {
+                        alert("Invalid role detected!");
+                    }
+                } else {
+                    errorMessage.innerText = "Login Failed: " + data.message;
+                    errorMessage.style.display = "block";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessage.innerText = "Server error. Try again later.";
+                errorMessage.style.display = "block";
+            });
+        }
+    </script>
+</body>
+</html>
